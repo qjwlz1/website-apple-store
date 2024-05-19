@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechWave Shop</title>
+    <link rel="stylesheet" href="https://unpkg.com/simplebar/dist/simplebar.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/simplebar/dist/simplebar.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+    <style>
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .chat-widget:hover {
+            width: 300px;
+            height: 300px;
+            border-radius: 20px;
+        }
+
+        .chat-widget:hover .chat-icon {
+            display: none;
+        }
+
+        .chat-icon {
+            font-size: 30px;
+        }
+
+        .chat-dialog {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 50px;
+            box-sizing: border-box;
+        }
+
+        .chat-widget:hover .chat-dialog {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .chat-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+        }
+
+        .send-btn {
+            width: 100%;
+            padding: 20px;
+            background-color: #ccc;
+            color: #333;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .response-message {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 20px;
+        }
+
+        .fade {
+            animation: fade 2s;
+        }
+
+        @keyframes fade {
+            from {opacity: .4}
+             to {opacity: 1}
+        }
+        #ad-slider {
+              position: relative;
+              width: 100%;
+              height: 600px; /* Высота слайдера */
+        }
+
+        #ad-slider div {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              display: none;
+        }
+
+        #ad-slider div.active {
+            display: block;
+        }
+
+        #ad-slider img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+        }
+        .product-slider {
+            width: 100%;
+
+        }
+        .product-slider .slick-slide {
+            text-align: center;
+        }
+
+        .product-slider .slick-slide img {
+             object-fit: scale-down
+             width: calc(10% - 10px);
+             background-color: #fff;
+             border-radius: 10px;
+             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+             margin-bottom: 10px;
+             padding: 10px;
+             text-align: center;
+             transition: transform 0.3s ease;
+        }
+        /* Общие стили */
+        body {
+            font-family: 'Ubuntu', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #dedede;
+            position: relative;
+        }
+
+        /* Шапка */
+        header {
+            background-image: url('14.jpg'); /* Место для фона */
+            background-size: cover;
+            color: #fff;
+            padding: 90px;
+            text-align: top;
+
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Ubuntu', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.1rem;
+            transition: color 0.6s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffd700;
+        }
+
+        .profile-button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.1rem;
+        }
+
+        .profile-button:hover {
+            background-color: #555;
+        }
+
+        /* Основной контент */
+        #main-content {
+
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        h2 {
+
+            text-align: center;
+        }
+
+        .product {
+            width: calc(20% - 30px);
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .product:hover {
+            transform: translateY(-15px);
+        }
+
+        .product img {
+            max-width: 100%;
+            height: auto; /* Высота будет автоматически вычислена для сохранения пропорций */
+            border-radius: 10px;
+        }
+
+        .product h3 {
+            margin-top: 10px;
+
+            font-size: 1.5rem;
+        }
+
+        .product p {
+            color: #666;
+
+            margin-bottom: 20px;
+        }
+
+        .product a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .product a:hover {
+            background-color: #555;
+        }
+
+        /* Секция лучших предложений */
+        .special-offers {
+            width: 100%;
+            background-color: #dedede;
+            text-align: center;
+            margin-top: 40px;
+            overflow-x: auto; /* Горизонтальная прокрутка */
+            white-space: nowrap; /* Предотвращаем перенос текста на новую строку */
+            padding-bottom: 10px;
+            position: relative;
+            scroll-behavior: smooth; /* Плавная прокрутка */
+        }
+
+        .special-offers::-webkit-scrollbar {
+            height: 6px; /* Высота полосы прокрутки */
+        }
+
+        .special-offers::-webkit-scrollbar-track {
+            background: #f1f1f1; /* Цвет трека */
+        }
+
+        .special-offers::-webkit-scrollbar-thumb {
+            background: #888; /* Цвет ползунка */
+        }
+
+        .special-offers::-webkit-scrollbar-thumb:hover {
+            background: #555; /* Цвет ползунка при наведении */
+        }
+
+        /* Дополнительные стили для элементов внутри .special-offers */
+        .special-offers .product {
+            display: inline-block;
+            margin: 0 10px;
+            /* Дополнительные стили для продуктов */
+        }
+
+        /* Секция новостей */
+        .news-section {
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f3f3f3;
+        }
+
+        .news-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .news-item p {
+            color: #666;
+
+        }
+
+        /* Подвал */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #000;
+            color: #fff;
+            position: absolute;
+            width: 100%;
+            bottom: 10;
+        }
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>TechWave Shop</h1>
+        <nav>
+            <ul>
+                <li><a href="main.html">Главная</a></li>
+                <li><a href="about.html">О нас</a></li>
+            </ul>
+            <div class="header-buttons">
+                <div class="login">
+                    <button class="profile-button" id="profileButton">Профиль</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <center><h1>Mac</h1></center>
+<div id="section1">
+    </div>
+    <center><h1> </h1></center>
+    <section id="main-content">
+
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="86.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="87.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="88.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 15"</h3>
+                <p> (M3, 8C CPU/10C GPU, 2024), 8 ГБ, 256 ГБ SSD, серебристый</p>
+                <h3>174 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="89.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="90.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="91.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 13"</h3>
+                <p>(M3, 8C CPU/8C GPU, 2024), 8 ГБ, 256 ГБ SSD, «полуночный черный»</p>
+                <h3>149 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="92.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="93.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="94.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 13"</h3>
+                <p>(M3, 8C CPU/8C GPU, 2024), 8 ГБ, 256 ГБ SSD, «сияющая звезда»</p>
+                <h3>149 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="97.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="95.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="96.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 13"</h3>
+                <p>(M3, 8C CPU/8C GPU, 2024), 8 ГБ, 256 ГБ SSD, «серый космос»</p>
+                <h3>149 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="98.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="99.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="100.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 15"</h3>
+                <p>(M3, 8C CPU/10C GPU, 2024), 8 ГБ, 256 ГБ SSD, «полуночный черный»</p>
+                <h3>174 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="101.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="102.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="103.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 15"</h3>
+                <p>(M3, 8C CPU/10C GPU, 2024), 8 ГБ, 256 ГБ SSD, «сияющая звезда»</p>
+                <h3>174 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="104.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="105.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="106.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 13"</h3>
+                <p>(M3, 8C CPU/8C GPU, 2024), 8 ГБ, 256 ГБ SSD, серебристый</p>
+                <h3>149 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="107.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="108.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="109.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 15"</h3>
+                <p>(M3, 8C CPU/10C GPU, 2024), 8 ГБ, 512 ГБ SSD, «серый космос»</p>
+                <h3>194 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="110.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="111.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="112.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 15"</h3>
+                <p>(M3, 8C CPU/10C GPU, 2024), 16 ГБ, 512 ГБ SSD, серебристый</p>
+                <h3>219 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="113.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="114.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="115.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 15"</h3>
+                <p>(M3, 8C CPU/10C GPU, 2024), 16 ГБ, 512 ГБ SSD, «полуночный черный»</p>
+                <h3>219 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="116.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="117.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="118.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 15"</h3>
+                <p>(M3, 8C CPU/10C GPU, 2024), 8 ГБ, 512 ГБ SSD, серебристый</p>
+                <h3>194 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="119.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="120.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="121.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 15"</h3>
+                <p> (M3, 8C CPU/10C GPU, 2024), 16 ГБ, 512 ГБ SSD, «полуночный черный»</p>
+                <h3>194 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="122.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="123.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="124.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 13"</h3>
+                <p>(M3, 8C CPU/10C GPU, 2024), 8 ГБ, 512 ГБ SSD, «полуночный черный»</p>
+                <h3>174 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="125.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="126.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="127.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 15"</h3>
+                <p>(M3, 8C CPU/10C GPU, 2024), 8 ГБ, 512 ГБ SSD, «полуночный черный»</p>
+                <h3>194 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="128.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="129.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="130.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 15"</h3>
+                <p>(M3, 8C CPU/10C GPU, 2024), 16 ГБ, 512 ГБ SSD, «серый космос»</p>
+                <h3>219 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+        <div class="product">
+            <div class="product-slider">
+
+                    <div>
+                        <img src="92.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="93.jpg" alt="Название первого товара">
+                    </div>
+                    <div>
+                        <img src="94.jpg" alt="Название первого товара">
+                    </div>
+                </div>
+                <h3>Apple MacBook Air 13"</h3>
+                <p>(M3, 8C CPU/8C GPU, 2024), 8 ГБ, 256 ГБ SSD, «сияющая звезда»</p>
+                <h3>149 990 ₽</h3>
+            <a href="#">Купить</a>
+        </div>
+
+
+        </section>
+    <footer>
+        <p>© 2024 Интернет-магазин электротоваров. Все права защищены.</p>
+        <p>Наш телефон: +79157950718</p>
+        <p>Наша почта: qjwlz@ya.ru</p>
+    </footer>
+
+    <div class="chat-widget">
+        <div class="chat-icon">💬</div>
+        <div class="chat-dialog">
+            <input type="text" class="chat-input" placeholder="Type a message...">
+            <button class="send-btn" onclick="sendMessage()">Send</button>
+            <div class="response-message" id="response-message"></div>
+        </div>
+    </div>
+    <script>
+        function sendMessage() {
+            var input = document.querySelector('.chat-input');
+            var message = input.value;
+            var responseContainer = document.getElementById('response-message');
+
+            // Here you would typically send the message to a server and get a response
+            // For demonstration purposes, we'll just display a predefined response
+            if (message.toLowerCase() === 'hello') {
+                responseContainer.textContent = 'Hello! How can I assist you today?';
+            } else if (message.toLowerCase() === 'how are you?') {
+                responseContainer.textContent = 'I am an AI, I do not have feelings.';
+            } else {
+                responseContainer.textContent = 'Sorry, I can only respond to "Hello" and "How are you?" messages.';
+            }
+
+            input.value = '';
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.product-slider').slick({
+                dots: true,
+                infinite: true,
+                speed: 500,
+                fade: true,
+                cssEase: 'linear'
+            });
+        });
+    </script>
+    <script src="https://unpkg.com/simplebar/dist/simplebar.min.js"></script>
+
+    <script>
+        var profileButton = document.querySelector('#profileButton');
+
+        var userName = localStorage.getItem('userName');
+        var isLoggedIn = userName !== null;
+
+        if (isLoggedIn) {
+            profileButton.textContent = userName;
+        } else {
+            profileButton.textContent = "Профиль";
+        }
+
+        profileButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            if (isLoggedIn) {
+                window.location.href = "profil.html";
+            } else {
+                var name = prompt("Пожалуйста, введите ваше имя:");
+                if (name) {
+                    localStorage.setItem('userName', name);
+                    profileButton.textContent = name;
+                    isLoggedIn = true;
+                }
+            }
+        });
+    </script>
+    <script>
+        // JavaScript для плавной прокрутки при прокрутке колёсиком мыши
+        const scrollableContainer = document.getElementById('scrollable-container');
+        const scrollableWidth = scrollableContainer.scrollWidth - scrollableContainer.clientWidth;
+        const scrollSpeed = 2; // Скорость прокрутки (значение больше 1)
+
+        scrollableContainer.addEventListener('wheel', function(event) {
+            event.preventDefault(); // Предотвращаем стандартную прокрутку страницы
+            const delta = event.deltaY * scrollSpeed;
+            scrollableContainer.scrollLeft += delta;
+        });
+    </script>
+    <script>
+        var adSlider = document.getElementById('ad-slider');
+        var adSlides = adSlider.getElementsByTagName('div');
+        var currentSlide = 0;
+
+        function showSlide(n) {
+            adSlides[currentSlide].classList.remove('active');
+            currentSlide = (n + adSlides.length) % adSlides.length;
+            adSlides[currentSlide].classList.add('active');
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        setInterval(nextSlide, 5000); // Автоматическое переключение слайдов через 5 секунд
+
+
+        var adSlider = document.getElementById('ad-slider');
+        var adSlides = adSlider.getElementsByTagName('div');
+        var currentSlide = 0;
+
+        function showSlide(n) {
+            adSlides[currentSlide].classList.remove('active', 'fade');
+            currentSlide = (n + adSlides.length) % adSlides.length;
+            adSlides[currentSlide].classList.add('active', 'fade');
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        setInterval(nextSlide, 5000); // Автоматическое переключение слайдов через 5 секунд
+    </script>
+    <script src="your-script.js"></script>
+</body>
+</html>

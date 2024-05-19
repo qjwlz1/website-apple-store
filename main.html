@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechWave Shop</title>
+    <link rel="stylesheet" href="https://unpkg.com/simplebar/dist/simplebar.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/simplebar/dist/simplebar.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+    <style>
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .chat-widget:hover {
+            width: 300px;
+            height: auto; /* Установка auto, чтобы размеры могли изменяться в зависимости от содержимого */
+            border-radius: 20px;
+        }
+
+        .chat-widget:hover .chat-icon {
+            display: none;
+        }
+
+        .chat-widget:hover .chat-dialog {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .chat-icon {
+            font-size: 30px;
+            transition: display 0.3s ease; /* Добавлен переход для плавного исчезновения иконки */
+        }
+
+        .chat-dialog {
+            display: none;
+            width: 100%;
+            padding: 20px; /* Уменьшаем внутренние отступы, чтобы диалоговое окно помещалось */
+            box-sizing: border-box;
+        }
+
+        .chat-input {
+            width: calc(100% - 40px); /* Учитываем внутренние отступы */
+            margin-bottom: 10px; /* Добавляем небольшой отступ между полем ввода и кнопкой отправки */
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+        }
+
+        .send-btn {
+            width: 100%;
+            padding: 20px;
+            background-color: #ccc;
+            color: #333;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .response-message {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 20px;
+        }
+
+
+
+        .fade {
+            animation: fade 2s;
+        }
+
+        @keyframes fade {
+            from {opacity: .4}
+             to {opacity: 1}
+        }
+        #ad-slider {
+              position: relative;
+              width: 100%;
+              height: 600px; /* Высота слайдера */
+        }
+
+        #ad-slider div {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              display: none;
+        }
+
+        #ad-slider div.active {
+            display: block;
+        }
+
+        #ad-slider img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+        }
+        .product-slider {
+            width: 100%;
+
+        }
+        .product-slider .slick-slide {
+            text-align: center;
+        }
+
+        .product-slider .slick-slide img {
+             width: 100%;
+             height: 100%;
+             object-fit: scale-down
+        }
+        /* Общие стили */
+        body {
+            font-family: 'Ubuntu', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #dedede;
+            position: relative;
+        }
+
+        /* Шапка */
+        header {
+            background-image: url('14.jpg'); /* Место для фона */
+            background-size: cover;
+            color: #fff;
+            padding: 90px;
+            text-align: top;
+
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Ubuntu', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.1rem;
+            transition: color 0.6s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffd700;
+        }
+
+        .profile-button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.1rem;
+        }
+
+        .profile-button:hover {
+            background-color: #555;
+        }
+
+        /* Основной контент */
+        #main-content {
+
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        h2 {
+
+            text-align: center;
+        }
+
+        .product {
+            width: calc(20% - 30px);
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .product:hover {
+            transform: translateY(-10px);
+        }
+
+        .product img {
+            max-width: 100%;
+            height: auto; /* Высота будет автоматически вычислена для сохранения пропорций */
+            border-radius: 10px;
+        }
+
+        .product h3 {
+            margin-top: 10px;
+
+            font-size: 1.5rem;
+        }
+
+        .product p {
+            color: #666;
+
+            margin-bottom: 20px;
+        }
+
+        .product a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .product a:hover {
+            background-color: #555;
+        }
+
+        /* Секция лучших предложений */
+        .special-offers {
+            width: 100%;
+            background-color: #dedede;
+            text-align: center;
+            margin-top: 20px;
+            overflow-x: auto; /* Горизонтальная прокрутка */
+            white-space: nowrap; /* Предотвращаем перенос текста на новую строку */
+            padding-bottom: 10px;
+            position: relative;
+            scroll-behavior: smooth; /* Плавная прокрутка */
+        }
+
+        .special-offers::-webkit-scrollbar {
+            height: 10px; /* Высота полосы прокрутки */
+        }
+
+        .special-offers::-webkit-scrollbar-track {
+            background: #f1f1f1; /* Цвет трека */
+        }
+
+        .special-offers::-webkit-scrollbar-thumb {
+            background: #888; /* Цвет ползунка */
+        }
+
+        .special-offers::-webkit-scrollbar-thumb:hover {
+            background: #555; /* Цвет ползунка при наведении */
+        }
+
+        /* Дополнительные стили для элементов внутри .special-offers */
+        .special-offers .product {
+            display: inline-block;
+            margin: 0 10px;
+            /* Дополнительные стили для продуктов */
+        }
+
+        /* Секция новостей */
+        .news-section {
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f3f3f3;
+        }
+
+        .news-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .news-item p {
+            color: #666;
+
+        }
+
+        /* Подвал */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: rgb(0,0,0);
+            color: #fff;
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+        }
+
+
+
+
+        .slider {
+            position: relative;
+            height: 650px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 16px 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .slider-slides {
+            position: relative;
+            height: 100%;
+            transition: transform 0.3s cubic-bezier(0.51, 0.92, 0.24, 1);
+            will-change: transform;
+        }
+        .slider-slide {
+            float: left;
+            height: 100%;
+            background-position: 50% 50%;
+            background-size: cover;
+        }
+        .slider-dots {
+            display: flex;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: calc(100% - 40px);
+        }
+        .slider-dot,
+        .slider-indicator {
+            display: block;
+            margin: 0 5px;
+            height: 14px;
+            background: grey;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+        .slider-indicator {
+            position: absolute;
+            background: white;
+            width: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 16px 20px rgba(0,0,0,0.2);
+        }
+        .slider-indicator-left {
+            transition: left 0.3s cubic-bezier(0.51, 0.92, 0.24, 1.15), right 0.3s 0.1s cubic-bezier(0.51, 0.92, 0.24, 1.15);
+        }
+        .slider-indicator-right {
+            transition: left 0.3s 0.1s cubic-bezier(0.51, 0.92, 0.24, 1.15), right 0.3s cubic-bezier(0.51, 0.92, 0.24, 1.15);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>TechWave Shop</h1>
+        <nav>
+            <div class="header-buttons">
+                <ul>
+                    <li><a href="#section1">Каталог</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                </ul>
+            </div>
+            <div class="header-buttons">
+                <div class="login">
+                    <button class="profile-button" id="profileButton">Профиль</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="slider">
+        <div class="slider-slides">
+            <div class="slider-slide" style="background-image: url(30.png);"></div>
+            <div class="slider-slide" style="background-image: url(29.png);"></div>
+            <div class="slider-slide" style="background-image: url(30.jpg);"></div>
+        </div>
+        <div class="slider-dots"></div>
+    </div>
+
+    <center><h1>Лучшие предложения</h1></center>
+    <div class="special-offers" id="scrollable-container">
+        <div class="product">
+                <div class="product-slider">
+                    <div>
+                        <img src="1.png" alt="">
+                    </div>
+                    <div>
+                        <img src="2.png" alt="">
+                    </div>
+                    <div>
+                        <img src="3.png" alt="">
+                    </div>
+                    <div>
+                        <img src="4.png" alt="">
+                    </div>
+                    <div>
+                        <img src="5.png" alt="">
+                    </div>
+                    <div>
+                        <img src="6.png" alt="">
+                    </div>
+                </div>
+                <h3>Apple iPhone 15 Pro Max</h3>
+                <p>dual-SIM 1 ТБ, «титановый чёрный»</p>
+                <h3>204 990 ₽</h3>
+                <a href="iphone_katalog.html">Подробнее</a>
+            </div>
+
+        <div class="product">
+                <div class="product-slider">
+                    <div>
+                        <img src="7.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="8.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="9.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="10.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="5.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="6.png" alt=" ">
+                    </div>
+                 
+                </div>
+                <h3>Apple iPhone 15 Pro Max</h3>
+                <p>dual-SIM 1 ТБ, «титановый синий»</p>
+                <h3>204 990 ₽</h3>
+                <a href="iphone_katalog.html">Подробнее</a>
+            </div>
+
+        <div class="product">
+            <div class="product-slider">
+                 <div>
+                        <img src="11.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="12.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="13.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="14.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="5.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="6.png" alt=" ">
+                    </div>
+                 
+                </div>
+                <h3>Apple iPhone 15 Pro Max</h3>
+                <p>dual-SIM 1 ТБ, «титановый бежевый»</p>
+                <h3>204 990 ₽</h3>
+            <a href="iphone_katalog.html">Подробнее</a>
+        </div>
+        <div class="product">
+            <div class="product-slider">
+                 <div>
+                        <img src="15.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="16.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="17.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="18.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="5.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="6.png" alt=" ">
+                    </div>
+                 
+                </div>
+                 
+                <h3>Apple iPhone 15 Pro Max</h3>
+                <p>dual-SIM 1 ТБ, «титановый белый»</p>
+                <h3>204 990 ₽</h3>
+            <a href="iphone_katalog.html">Подробнее</a>
+        </div>
+        <div class="product">
+            <div class="product-slider">
+                 <div>
+                        <img src="20.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="21.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="22.png" alt=" ">
+                    </div>
+                </div>
+                <h3>Apple Watch Series 9</h3>
+                <p>41 мм, корпус из алюминия цвета «тёмная ночь»,</p>
+                <p> спортивный ремешок цвета «тёмная ночь»</p>
+                <h3>47 990 ₽</h3>
+            <a href="watch_katalog.html">Подробнее</a>
+        </div>
+        <div class="product">
+            <div class="product-slider">
+                 <div>
+                        <img src="23.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="24.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="25.png" alt=" ">
+                    </div>
+                </div>
+                <h3>Apple Watch Series 9</h3>
+                <p>41 мм, корпус из алюминия розового цвета,</p>
+                <p>спортивный ремешок нежно-розового цвета</p>
+                <h3>47 990 ₽</h3>
+            <a href="watch_katalog.html">Подробнее</a>
+        </div>
+        <div class="product">
+            <div class="product-slider">
+                 <div>
+                        <img src="26.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="27.png" alt=" ">
+                    </div>
+                    <div>
+                        <img src="28.png" alt=" ">
+                    </div>
+                </div>
+                <h3>Apple Watch Series 9</h3>
+                <p>41 мм, корпус из алюминия серебристого цвета,</p>
+                <p>спортивный ремешок цвета «ледяной синий»</p>
+                <h3>47 990 ₽</h3>
+            <a href="watch_katalog.html">Подробнее</a>
+        </div>
+    </div>
+
+    <div id="section1">
+    </div>
+    <center><h1> </h1></center>
+    <section id="main-content">
+        <div class="product">
+            <div>
+                <img src="31.png" alt="iPhone">
+            </div>
+
+            <h3>iPhone</h3>
+            <p>от 89 990 ₽</p>
+            <a href="iphone_katalog.html">Подробнее</a>
+        </div>
+
+        <div class="product">
+            <div>
+                <img src="32.png" alt="iPad">
+            </div>
+
+            <h3>iPad</h3>
+            <p>от 144 990 ₽</p>
+            <a href="ipad_katalog.html">Подробнее</a>
+        </div>
+
+        <div class="product">
+            <div>
+                <img src="33.png" alt="Watch">
+            </div>
+
+            <h3>Watch</h3>
+            <p>от 30 990 ₽</p>
+            <a href="watch_katalog.html">Подробнее</a>
+        </div>
+
+        <div class="product">
+            <div>
+                <img src="34.png" alt="Mac">
+            </div>
+
+            <h3>Mac</h3>
+            <p>от 149 990 ₽</p>
+            <a href="mac_katalog.html">Подробнее</a>
+        </div>
+    </section>
+
+    <!-- Секция новостей -->
+    <section class="news-section">
+        <h2>Новости</h2>
+        <div class="news-item">
+            <h3>СМИ: RTX 5090 и 5080 выйдут в конце 2024 года</h3>
+            <p>NVIDIA и партнёры уже начали готовиться к старту продаж.
+                Также ожидается рост средней стоимости графических ускорителей. Вероятно, цена 5090 и 5080 будет выше, чем на флагманы прошлых лет.
+                Согласно предыдущим утечкам, NVIDIA будет использовать в новых картах память GDDR7 со скоростью 28 Гбит/с на контакт и 512-битной шиной.
+                Максимальный объём видеопамяти составит 32 ГБ.</p>
+            <p>8 Апреля</p>
+        </div>
+        <div class="news-item">
+            <h3>В следующей части Battlefield будут две стороны конфликта – НАТО против «неизвестной массивной ЧВК».</h3>
+            <p>Об этом сообщил известный инсайдер Том Хендерсон. Место действия не раскрывается, но некоторые инсайдеры заявляют, что это будет Африка.</p>
+            <p>7 Апреля</p>
+        </div>
+        <div class="news-item">
+            <h3>«Магическая битва» стала самым популярным аниме в мире и даже попала в «Книгу рекордов Гиннеса».</h3>
+            <p>Тайтл оказался в среднем в 71.2 раза популярнее, чем средний аниме-сериал. Прошлый рекорд четыре года принадлежал «Атаке Титанов».</p>
+            <p>6 Апреля</p>
+        </div>
+        <div class="news-item">
+            <h3>«Смута» официально вышла</h3>
+            <p>Напомним, это отечественный проект, на разработку которого было потрачено около полумиллиарда рублей государственных денег.
+                Действие игры происходит в эпоху Смутного времени в Московском княжестве.
+                «Смута» вышла эксклюзивно в VK Play по цене 2015 рублей.</p>
+            <p>4 Апреля</p>
+        </div>
+        <div class="news-item">
+            <h3></h3>
+            <p></p>
+            <p></p>
+        </div>
+    </section>э
+
+
+    <footer>
+        <p>© 2024 Интернет-магазин электротоваров. Все права защищены.</p>
+        <p>Наш телефон: +79157950718</p>
+        <p>Наша почта: qjwlz@ya.ru</p>
+    </footer>
+
+
+    <div class="chat-widget">
+        <div class="chat-icon">💬</div>
+        <div class="chat-dialog">
+            <input type="text" class="chat-input" placeholder="Напиши ваше сообщение...">
+            <button class="send-btn" onclick="sendMessage()">Отправить</button>
+            <div class="response-message" id="response-message"></div>
+        </div>
+    </div>
+
+   <script>
+    function sendMessage() {
+        var input = document.querySelector('.chat-input');
+        var message = input.value;
+        var responseContainer = document.getElementById('response-message');
+
+        if (message.toLowerCase() === 'привет') {
+            responseContainer.textContent = 'привет, как я могу помочь?';
+        } else if (message.toLowerCase() === 'каталог') {
+            responseContainer.textContent = 'на главной странице вкладка каталог';
+        } else if (message.toLowerCase() === 'регистрация') {
+            responseContainer.textContent = 'Нажмите на кнопку в углу справа вверху страницы';
+        } else if (message.toLowerCase() === 'спасибо') {
+            responseContainer.textContent = 'Рад был помочь';
+        } else if (message.toLowerCase() === 'как дела?') {
+            responseContainer.textContent = 'Я программа, у меня нет чувств';
+        } else if (message.toLowerCase() === 'как купить?') {
+            responseContainer.textContent = 'Перейдите в каталог товаров, нажмите кнопку "купить"';
+        } else if (message.toLowerCase() === 'магазин') {
+            responseContainer.textContent = 'Добро пожаловать на сайт магазина TechWave Shop';
+        } else {
+            responseContainer.textContent = 'Мои команды: "привет", "каталог", "регистрация", "спасибо", "как дела?", "как купить?", "магазин".';
+        }
+        input.value = '';
+    }
+</script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.product-slider').slick({
+                dots: true,
+                infinite: true,
+                speed: 500,
+                fade: true,
+                cssEase: 'linear'
+            });
+        });
+    </script>
+    <script src="https://unpkg.com/simplebar/dist/simplebar.min.js"></script>
+
+    <script>
+        var profileButton = document.querySelector('#profileButton');
+
+        var userName = localStorage.getItem('userName');
+        var isLoggedIn = userName !== null;
+
+        if (isLoggedIn) {
+            profileButton.textContent = userName;
+        } else {
+            profileButton.textContent = "Профиль";
+        }
+
+        profileButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            if (isLoggedIn) {
+                window.location.href = "profil.html";
+            } else {
+                var name = prompt("Пожалуйста, введите ваше имя:");
+                if (name) {
+                    localStorage.setItem('userName', name);
+                    profileButton.textContent = name;
+                    isLoggedIn = true;
+                }
+            }
+        });
+    </script>
+    <script>
+        // JavaScript для плавной прокрутки при прокрутке колёсиком мыши
+        const scrollableContainer = document.getElementById('scrollable-container');
+        const scrollableWidth = scrollableContainer.scrollWidth - scrollableContainer.clientWidth;
+        const scrollSpeed = 2; // Скорость прокрутки (значение больше 1)
+
+        scrollableContainer.addEventListener('wheel', function(event) {
+            event.preventDefault(); // Предотвращаем стандартную прокрутку страницы
+            const delta = event.deltaY * scrollSpeed;
+            scrollableContainer.scrollLeft += delta;
+        });
+    </script>
+    <script>
+        var adSlider = document.getElementById('ad-slider');
+        var adSlides = adSlider.getElementsByTagName('div');
+        var currentSlide = 0;
+
+        function showSlide(n) {
+            adSlides[currentSlide].classList.remove('active');
+            currentSlide = (n + adSlides.length) % adSlides.length;
+            adSlides[currentSlide].classList.add('active');
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        setInterval(nextSlide, 5000); // Автоматическое переключение слайдов через 5 секунд
+
+
+        var adSlider = document.getElementById('ad-slider');
+        var adSlides = adSlider.getElementsByTagName('div');
+        var currentSlide = 0;
+
+        function showSlide(n) {
+            adSlides[currentSlide].classList.remove('active', 'fade');
+            currentSlide = (n + adSlides.length) % adSlides.length;
+            adSlides[currentSlide].classList.add('active', 'fade');
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        setInterval(nextSlide, 5000); // Автоматическое переключение слайдов через 5 секунд
+    </script>
+    <script>
+        $(function() {
+            $('.slider').each(function() {
+                let $th = $(this);
+                $th.attr('data-pos', 1);
+                let slide = $th.find('.slider-slide');
+                let num = $th.find('.slider-slide').length;
+                let dots = $th.find('.slider-dots');
+                dots.prepend('<span class="slider-indicator"></span>');
+                for( let i = 1; i <= num; i++ ){
+                    dots.append('<span style="width:' + 100 / num + '%" class="slider-dot" data-pos="'+ i +'"></span>');
+                }
+                $th.find('.slider-slides').css('width', 100 * num + '%');
+                slide.css('width', 100 / num + '%');
+                $th.find('.slider-dot').on('click', function(){
+                    let currentPos = $th.attr('data-pos');
+                    let newPos = $(this).attr('data-pos');
+                    let newDirection = (newPos > currentPos ? 'right' : 'left');
+                    let currentDirection = (newPos < currentPos ? 'right' : 'left');
+                    $th.find('.slider-indicator').removeClass('slider-indicator-' + currentDirection);
+                    $th.find('.slider-indicator').addClass('slider-indicator-' + newDirection);
+                    $th.attr('data-pos', newPos);
+                    $th.find('.slider-slides').css('transform', 'translateX(-' + 100 / num * (newPos - 1) + '%)');
+                    $th.find('.slider-indicator').css({'left': 100 / num * (newPos - 1) + '%','right':100 - (100 / num) - 100 / num * (newPos - 1) + '%'});
+                });
+                $th.find('.slider-indicator').css({'left': 0,'right': 100 - (100 / num) + '%'});
+            });
+        });
+    </script>
+    <script src="your-script.js"></script>
+</body>
+</html>

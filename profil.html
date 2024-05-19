@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль пользователя</title>
+    <style>
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .chat-widget:hover {
+            width: 300px;
+            height: 300px;
+            border-radius: 20px;
+        }
+
+        .chat-widget:hover .chat-icon {
+            display: none;
+        }
+
+        .chat-icon {
+            font-size: 30px;
+        }
+
+        .chat-dialog {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 50px;
+            box-sizing: border-box;
+        }
+
+        .chat-widget:hover .chat-dialog {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .chat-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+        }
+
+        .send-btn {
+            width: 100%;
+            padding: 20px;
+            background-color: #ccc;
+            color: #333;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .response-message {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 20px;
+        }
+
+        .fade {
+            animation: fade 2s;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .profile-picture {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background-color: #ddd; /* Добавляем цвет фона для изображения профиля */
+            overflow: hidden; /* Обрезаем лишнее изображение */
+        }
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Сохраняем пропорции изображения */
+        }
+        .file-input {
+            margin-bottom: 10px;
+        }
+        .home-link {
+            display: block;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #007BFF;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .home-link:hover {
+            text-decoration: underline;
+        }
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .chat-widget:hover {
+            width: 300px;
+            height: 300px;
+            border-radius: 20px;
+        }
+
+        .chat-widget:hover .chat-icon {
+            display: none;
+        }
+
+        .chat-icon {
+            font-size: 30px;
+        }
+
+        .chat-dialog {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 50px;
+            box-sizing: border-box;
+        }
+
+        .chat-widget:hover .chat-dialog {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .chat-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+        }
+
+        .send-btn {
+            width: 100%;
+            padding: 20px;
+            background-color: #ccc;
+            color: #333;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .response-message {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 20px;
+        }
+
+        .fade {
+            animation: fade 2s;
+        }
+
+        @keyframes fade {
+            from {opacity: .4}
+             to {opacity: 1}
+        }
+        #ad-slider {
+              position: relative;
+              width: 100%;
+              height: 600px; /* Высота слайдера */
+        }
+
+        #ad-slider div {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              display: none;
+        }
+
+        #ad-slider div.active {
+            display: block;
+        }
+
+        #ad-slider img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+        }
+        .product-slider {
+            width: 100%;
+
+        }
+        .product-slider .slick-slide {
+            text-align: center;
+        }
+
+        .product-slider .slick-slide img {
+             width: 100%;
+             height: 100%;
+             object-fit: scale-down
+        }
+        /* Общие стили */
+        body {
+            font-family: 'Ubuntu', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #dedede;
+            position: relative;
+        }
+
+        /* Шапка */
+        header {
+            background-image: url('14.jpg'); /* Место для фона */
+            background-size: cover;
+            color: #fff;
+            padding: 90px;
+            text-align: top;
+
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Ubuntu', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.1rem;
+            transition: color 0.6s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffd700;
+        }
+
+        .profile-button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.1rem;
+        }
+
+        .profile-button:hover {
+            background-color: #555;
+        }
+
+        /* Основной контент */
+        #main-content {
+
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        h2 {
+
+            text-align: center;
+        }
+
+        .product {
+            width: calc(20% - 30px);
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .product:hover {
+            transform: translateY(-15px);
+        }
+
+        .product img {
+            max-width: 100%;
+            height: auto; /* Высота будет автоматически вычислена для сохранения пропорций */
+            border-radius: 10px;
+        }
+
+        .product h3 {
+            margin-top: 10px;
+
+            font-size: 1.5rem;
+        }
+
+        .product p {
+            color: #666;
+
+            margin-bottom: 20px;
+        }
+
+        .product a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .product a:hover {
+            background-color: #555;
+        }
+
+        /* Секция лучших предложений */
+        .special-offers {
+            width: 100%;
+            background-color: #dedede;
+            text-align: center;
+            margin-top: 40px;
+            overflow-x: auto; /* Горизонтальная прокрутка */
+            white-space: nowrap; /* Предотвращаем перенос текста на новую строку */
+            padding-bottom: 10px;
+            position: relative;
+            scroll-behavior: smooth; /* Плавная прокрутка */
+        }
+
+        .special-offers::-webkit-scrollbar {
+            height: 6px; /* Высота полосы прокрутки */
+        }
+
+        .special-offers::-webkit-scrollbar-track {
+            background: #f1f1f1; /* Цвет трека */
+        }
+
+        .special-offers::-webkit-scrollbar-thumb {
+            background: #888; /* Цвет ползунка */
+        }
+
+        .special-offers::-webkit-scrollbar-thumb:hover {
+            background: #555; /* Цвет ползунка при наведении */
+        }
+
+        /* Дополнительные стили для элементов внутри .special-offers */
+        .special-offers .product {
+            display: inline-block;
+            margin: 0 10px;
+            /* Дополнительные стили для продуктов */
+        }
+
+        /* Секция новостей */
+        .news-section {
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f3f3f3;
+        }
+
+        .news-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .news-item p {
+            color: #666;
+
+        }
+
+        /* Подвал */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #000;
+            color: #fff;
+            position: absolute;
+            width: 100%;
+            bottom: 10;
+        }
+        .about-section {
+            padding: 40px;
+            background-color: #fff;
+            margin-top: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-section h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .about-section p {
+            text-align: justify;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .team-photo {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        /* Стили для кнопки "Вернуться на главную" */
+        .home-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .home-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .home-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>TechWave Shop</h1>
+        <nav>
+            <ul>
+                <li><a href="main.html">Главная</a></li>
+                <li><a href="about.html">О нас</a></li>
+
+            </ul>
+
+        </nav>
+    </header>
+
+<div class="container">
+    <h1></h1>
+    <h1 style="text-align: center;">Профиль пользователя</h1>
+    <div class="profile-picture">
+        <img id="avatar-preview" src="placeholder.jpg" alt="Изображение профиля">
+    </div>
+    <input type="file" id="avatar" class="file-input" accept="image/*">
+    <form id="profile-form">
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="birthdate">Дата рождения:</label>
+            <input type="date" id="birthdate" name="birthdate" required>
+        </div>
+        <h1></h1>
+
+        <div class="form-group">
+            <label for="about">О себе:</label>
+            <textarea id="about" name="about" rows="5" required></textarea>
+        </div>
+        <button type="submit">Сохранить</button>
+       <h1></h1>
+    </form>
+</div>
+<div class="chat-widget">
+        <div class="chat-icon">💬</div>
+    <div class="chat-dialog">
+        <input type="text" class="chat-input" placeholder="Напиши ваше сообщение...">
+        <button class="send-btn" onclick="sendMessage()">Отправить</button>
+        <div class="response-message" id="response-message"></div>
+    </div>
+</div>
+    <footer>
+        <p>© 2024 Интернет-магазин электротоваров. Все права защищены.</p>
+        <p>Наш телефон: +79157950718</p>
+        <p>Наша почта: qjwlz@ya.ru</p>
+    </footer>
+    <script>
+        function sendMessage() {
+            var input = document.querySelector('.chat-input');
+            var message = input.value;
+            var responseContainer = document.getElementById('response-message');
+
+            if (message.toLowerCase() === 'привет') {
+                responseContainer.textContent = 'привет, как я могу помочь?';
+            } else if (message.toLowerCase() === 'каталог') {
+                responseContainer.textContent = 'на главной странице вкладка каталог';
+            } else {
+                responseContainer.textContent = 'Извините, я могу ответить только на "привет" и "каталог"';
+            }
+            input.value = '';
+        }
+    </script>
+<script>
+    // Обработчик события изменения input type=file для загрузки изображения
+    document.getElementById('avatar').addEventListener('change', function(event) {
+        var file = event.target.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('avatar-preview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    document.getElementById('profile-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Получаем значения полей формы
+        var email = document.getElementById('email').value;
+        var birthdate = document.getElementById('birthdate').value;
+        var about = document.getElementById('about').value;
+        var avatar = document.getElementById('avatar-preview').src;
+
+        // Создаем объект с данными пользователя
+        var userData = {
+            email: email,
+            birthdate: birthdate,
+            about: about,
+            avatar: avatar
+        };
+
+        // Сохраняем данные пользователя в локальном хранилище
+        localStorage.setItem('userProfile', JSON.stringify(userData));
+
+        // Отображаем уведомление об успешном сохранении
+        alert('Данные профиля сохранены успешно!');
+    });
+
+    // При загрузке страницы пытаемся заполнить форму данными из локального хранилища
+    window.onload = function() {
+        var userData = JSON.parse(localStorage.getItem('userProfile'));
+        if (userData) {
+            document.getElementById('email').value = userData.email;
+            document.getElementById('birthdate').value = userData.birthdate;
+            document.getElementById('about').value = userData.about;
+            document.getElementById('avatar-preview').src = userData.avatar;
+        }
+    };
+</script>
+
+</body>
+</html>
